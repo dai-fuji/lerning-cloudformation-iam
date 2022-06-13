@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: learn to create iam group by cfn
+  
+Resources:
+  IamGroupTemp:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: "create-by-cfn-group"
+
+  IamPolicyTemp:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: "create-by-cfn-policy" # Required
+      PolicyDocument:  # Required
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "ec2:*"
+            Resource: "arn:aws:ec2:*:*:*"
+      Groups:
+        - !Ref IamGroupTemp
