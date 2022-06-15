@@ -2,21 +2,40 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: learn to create iam group by cfn
   
 Resources:
-  IamGroupTemp:
+  IamGroupDemo:
     Type: AWS::IAM::Group
     Properties:
-      GroupName: "create-by-cfn-group"
+      GroupName: "iamgroup-demo"
 
-  IamPolicyTemp:
+  IamPolicyDemo:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: "create-by-cfn-policy" # Required
+      PolicyName: "can-be-edit-own-password" # Required
       PolicyDocument:  # Required
         Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Action:
-              - "ec2:*"
-            Resource: "arn:aws:ec2:*:*:*"
+              - "iam:ChangePassword"
+              - "iam:CreateAccessKey"
+              - "iam:CreateVirtualMFADevice"
+              - "iam:DeactivateMFADevice"
+              - "iam:DeleteAccessKey"
+              - "iam:DeleteVirtualMFADevice"
+              - "iam:EnableMFADevice"
+              - "iam:UpdateAccessKey"
+              - "iam:UpdateSigningCertificate"
+              - "iam:UploadSigningCertificate"
+              - "iam:UpdateLoginProfile"
+              - "iam:ResyncMFADevice"
+            Resource:
+              - !Sub "arn:aws:iam::${AWS::AccountId}:user/${!aws:username}"
+              - !Sub "arn:aws:iam::${AWS::AccountId}:mfa/${!aws:username}"
+          - Effect: Allow
+            Action:
+              - "iam:Get*"
+              - "iam:List*"
+            Resource:
+              - "*"
       Groups:
-        - !Ref IamGroupTemp
+        - !Ref IamGroupDemo
